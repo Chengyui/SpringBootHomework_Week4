@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.scu.db.demo.mapper.BookMapper">
+    <resultMap id="book_resultmap" type="org.scu.db.demo.model.Book">
+        <id property="bookId" column="book_id"/>
+        <result property="edition" column="edition"/>
+        <result property="borrowduedate" column="borrowduedate"/>
+        <result property="borrowermemno" column="borrowermemno"/>
+        <result property="callnumber" column="callnumber"/>
+
+    </resultMap>
+
+
+
+    <select id="queryBook" resultMap="book_resultmap">
+        select * from Book;
+    </select>
+<!--    例子：查询每一图书的callnumber号和本数-->
+    <select id="query_call_and_count" resultType="map">
+        select callnumber, count(*) as call_num from Book group by callnumber;
+    </select>
+    <select id="find_all_borrowed_books_id" resultType="Integer">
+        select book_id from book where borrowermemno is not null;
+    </select>
+    <select id = "count_call_123book" resultType="Integer">
+        select count(*) from book where callnumber = 'Call123';
+    </select>
+    <select id = "find_count_not_exceed_2_callnumber" resultType="String">
+        select callNumber from book group by callnumber having count(*) <![CDATA[ <= ]]>2;
+    </select>
+</mapper>
+
+
